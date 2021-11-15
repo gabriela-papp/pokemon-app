@@ -1,23 +1,45 @@
-import logo from './logo.svg';
+import {useEffect, useState} from 'react';
+import Pokemon from './components/pokemon/Pokemon';
+import axios from 'axios';
 import './App.css';
 
+//API
+const API = 'https://pokeapi.co/api/v2/pokemon?limit=151';
+
 function App() {
+  const [pokemonData, setPokemonData] = useState([]);
+  
+  // Get the response from the API
+  useEffect(() => {
+    axios.get(`${API}`)
+    .then((response)=> {
+      // handle success
+      // setPokemon({name: response.data.result}) 
+      setPokemonData(response.data.results);
+       console.log(response.data);
+     })
+  }, [])
+
+  const getPrev=()=>{
+    
+  }
+
+  const getNext=()=>{
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <select name='name' id='pokemon'>
+        {pokemonData.map((pokemon, id)=>{
+        return(
+          <option value={pokemon.name} key={`pokemon-${id}`}>{pokemon.name}</option>
+          )
+        })}
+        </select>
+     <Pokemon/>
+     <button onClick={getPrev}>Prev</button>
+     <button onClick={getNext}>Next</button>
     </div>
   );
 }
